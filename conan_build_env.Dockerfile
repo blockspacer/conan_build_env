@@ -174,10 +174,10 @@ RUN set -ex \
   if [ ! -z "$http_proxy" ]; then \
     echo 'WARNING: CONAN SSL CHECKS DISABLED! SEE http_proxy IN DOCKERFILE' \
     && \
-    $CONAN remote update conan-center https://conan.bintray.com False \
+    ($CONAN remote update conan-center https://conan.bintray.com False || true) \
     ; \
   else \
-    $CONAN remote update conan-center https://conan.bintray.com True \
+    ($CONAN remote update conan-center https://conan.bintray.com True || true) \
     ; \
   fi \
   && \
@@ -212,7 +212,7 @@ RUN set -ex \
   fi \
   && \
   if [ ! -z "$CONAN_EXTRA_REPOS" ]; then \
-    $CONAN remote add $CONAN_EXTRA_REPOS \
+    ($CONAN remote add $CONAN_EXTRA_REPOS || true) \
     ; \
   fi \
   && \

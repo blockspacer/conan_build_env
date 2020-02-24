@@ -96,7 +96,8 @@ build/
 **/generated
 
 *.crt
-*.ca-cert*
+.ca-certificates/**
+!.ca-certificates/.gitkeep
 *.log
 *pb2.py
 *pb2_grpc.py
