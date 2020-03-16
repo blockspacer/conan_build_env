@@ -56,6 +56,11 @@ WORKDIR $PROJ_DIR
 
 RUN set -ex \
   && \
+  if [ ! -z "$http_proxy" ]; then \
+    echo 'detected proxy, some SSL checks will be disabled' \
+    ; \
+  fi \
+  && \
   $APT update \
   && \
   $APT install -y \
@@ -218,6 +223,15 @@ RUN set -ex \
   && \
   if [ ! -z "$CONAN_EXTRA_REPOS_USER" ]; then \
     $CONAN $CONAN_EXTRA_REPOS_USER \
+    ; \
+  fi \
+  && \
+  if [ ! -z "$http_proxy" ]; then \
+    echo 'disabled conan downloaded verification due to proxy' \
+    && \
+    # Force `verify=False`. See https://github.com/conan-io/conan/issues/6651
+    # Find and replace text within a file using sed command
+    sed -i 's/stream=True, verify=self._verify_ssl, auth=auth,/stream=True, verify=False, auth=auth,/g' /usr/local/lib/python3.6/dist-packages/conans/client/rest/uploader_downloader.py \
     ; \
   fi \
   && \
